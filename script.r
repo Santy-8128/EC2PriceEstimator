@@ -1,14 +1,11 @@
+### A small simple R utility to estimate pricing across multiple EC2 instances and show the minimum
+### Usage Rscript script.r --NoJobs 10000 --MemoryPerJob 35 --CPUPerJob 16 --DiskSpacePerJob 200 --TimePerJob 3 > OUTPUT.txt
 
-Spec=c(35,16,200,10000)
 
 require(knitr)
 library(argparse)
 
 parser <- ArgumentParser()
-
-# specify our desired options 
-# by default ArgumentParser will add an help option 
-
 parser$add_argument("-n", "--NoJobs", type="integer", default=0,
     help="Total number of jobs to run [default %(default)s]",
     metavar="number")
@@ -24,8 +21,6 @@ parser$add_argument("-d", "--DiskSpacePerJob", type="integer", default=0,
 parser$add_argument("-t", "--TimePerJob", type="integer", default=0, 
     help="Average time per job [default %(default)s]",
     metavar="number")
-# get command line options, if help option encountered print help and exit,
-# otherwise if options not found on command line then set defaults, 
 args <- parser$parse_args()
 
 
@@ -36,11 +31,30 @@ DiskSpacePerJob=as.numeric(args$DiskSpacePerJob)
 TimePerJob=as.numeric(args$TimePerJob)
 
 
-
-if(NoJobs*MemoryPerJob*CPUPerJob*DiskSpacePerJob*TimePerJob==0)
+if(NoJobs==0)
 {
-	parser$print_help()
-	quit()
+    print(" Please input non-zero value for --NoJobs(-n)")
+    quit()
+}
+if(MemoryPerJob==0)
+{
+    print(" Please input non-zero value for --MemoryPerJob(-m)")
+    quit()
+}
+if(CPUPerJob==0)
+{
+    print(" Please input non-zero value for --CPUPerJob(-c)")
+    quit()
+}
+if(DiskSpacePerJob==0)
+{
+    print(" Please input non-zero value for --DiskSpacePerJob(-d)")
+    quit()
+}
+if(TimePerJob==0)
+{
+    print(" Please input non-zero value for --TimePerJob(-t)")
+    quit()
 }
 
 
