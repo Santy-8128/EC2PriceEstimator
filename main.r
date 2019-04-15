@@ -21,7 +21,7 @@ option_list = list(
   make_option(c("-t", "--TimePerJob"), action="store", default=NA, type='integer',
               help="Average time per job")
 )
-opt = parse_args(OptionParser(option_list=option_list))
+opt = parse_args(OptionParser(usage = "usage: %prog [options]", option_list=option_list,add_help_option = TRUE,))
 
 
 
@@ -32,31 +32,10 @@ CPUPerJob=as.numeric(opt$CPUPerJob)
 DiskSpacePerJob=as.numeric(opt$DiskSpacePerJob)
 TimePerJob=as.numeric(opt$TimePerJob)
 
-
-if(NoJobs==0)
+if(is.na(opt$NoJobs) || is.na(opt$MemoryPerJob) || is.na(opt$CPUPerJob) || is.na(opt$DiskSpacePerJob) || is.na(opt$TimePerJob))
 {
-    print(" Please input non-zero value for --NoJobs(-n)")
-    quit()
-}
-if(MemoryPerJob==0)
-{
-    print(" Please input non-zero value for --MemoryPerJob(-m)")
-    quit()
-}
-if(CPUPerJob==0)
-{
-    print(" Please input non-zero value for --CPUPerJob(-c)")
-    quit()
-}
-if(DiskSpacePerJob==0)
-{
-    print(" Please input non-zero value for --DiskSpacePerJob(-d)")
-    quit()
-}
-if(TimePerJob==0)
-{
-    print(" Please input non-zero value for --TimePerJob(-t)")
-    quit()
+      print(" All input parameters are mandatory. Please type: Rscript main.r --help")
+      quit()
 }
 
 
